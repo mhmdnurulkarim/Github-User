@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Github User</string>
+    <string name="user">User</string>
+    <string name="creator">Muhammad Nurul Karim</string>
+    <string name="bangkit_id">A4216BSY2660</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="repository">Repository</string>
+    <string name="searchbar_hint">Mau cari siapa?</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="nothing_user">User tidak ditemukan</string>
+    <string name="favorite">Favorite</string>
+    <string name="darkTheme">Dark Theme</string>
+</resources>
