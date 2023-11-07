@@ -4,7 +4,7 @@
 ## Disclaimer ⚠️
 This repository is created for sharing and educational purposes only. Plagiarism is unacceptable and is not my responsibility as the author.
 
-## criteria Submission 1
+## Criteria Submission 1
 ### 1. Search User
 The conditions that must be met are as follows:
 - Displays a list of user data from the API using RecyclerView with minimal data, avatar photo and username.
@@ -30,7 +30,7 @@ There is a loading indicator when the application loads data in all sections tha
 - List follows
 - Follower list
 
-## criteria Submission 2
+## Criteria Submission 2
 ### 1. Favorite User with Database
 The conditions that must be met are as follows:
 - The application must be able to add and remove users from the favorites list.
