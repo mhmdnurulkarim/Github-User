@@ -2,21 +2,20 @@ package com.mhmdnurulkarim.githubuser.ui.followersFragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mhmdnurulkarim.githubuser.adapter.UserAdapter
-import com.mhmdnurulkarim.githubuser.data.DetailUserResponse
-import com.mhmdnurulkarim.githubuser.data.dataStore.Resource
+import com.mhmdnurulkarim.githubuser.data.Result
+import com.mhmdnurulkarim.githubuser.data.network.DetailUserResponse
 import com.mhmdnurulkarim.githubuser.databinding.FragmentFollowersBinding
-import com.mhmdnurulkarim.githubuser.ui.mainActivity.MainActivity
-import com.mhmdnurulkarim.githubuser.utils.ViewStateCallback
+import com.mhmdnurulkarim.githubuser.ui.ViewModelFactory
 
-class FollowersFragment : Fragment(), ViewStateCallback<List<DetailUserResponse>> {
+class FollowersFragment : Fragment() {
 
     companion object {
         private const val KEY_BUNDLE = "USERNAME"
@@ -32,7 +31,7 @@ class FollowersFragment : Fragment(), ViewStateCallback<List<DetailUserResponse>
 
     private var _binding: FragmentFollowersBinding? = null
     private val binding get() = _binding as FragmentFollowersBinding
-    private val followersViewModel: FollowersViewModel by viewModels()
+    private val followersViewModel: FollowersViewModel by viewModels{ ViewModelFactory.getInstance(requireActivity()) }
     private lateinit var  mAdapter: UserAdapter
     private var username: String? = null
 
@@ -67,33 +66,33 @@ class FollowersFragment : Fragment(), ViewStateCallback<List<DetailUserResponse>
 
         followersViewModel.getUserFollowers(username.toString()).observe(viewLifecycleOwner){
             when (it) {
-                is Resource.Error -> onFailed(it.message)
-                is Resource.Loading -> onLoading()
-                is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
+                is Result.Error -> onFailed(it.error)
+                is Result.Loading -> onLoading()
+                is Result.Success -> onSuccess(it.data)
             }
         }
     }
 
-    override fun onSuccess(data: List<DetailUserResponse>){
+    private fun onSuccess(data: List<DetailUserResponse>){
         mAdapter.submitList(data)
         binding.contentRecyclerView.apply {
-            progressBar.visibility = invisible
-            rvMain.visibility = visible
+            progressBar.visibility = View.GONE
+            rvMain.visibility = View.VISIBLE
         }
     }
 
-    override fun onLoading() {
+    private fun onLoading() {
         binding.contentRecyclerView.apply {
-            progressBar.visibility = visible
-            rvMain.visibility = invisible
+            progressBar.visibility = View.VISIBLE
+            rvMain.visibility = View.GONE
         }
     }
 
-    override fun onFailed(message: String?) {
+    private fun onFailed(message: String?) {
         binding.contentRecyclerView.apply {
-            progressBar.visibility = invisible
-            rvMain.visibility = invisible
+            progressBar.visibility = View.GONE
+            rvMain.visibility = View.GONE
         }
-        Log.d(MainActivity::class.java.simpleName, message.toString())
+        Log.d(FollowersFragment::class.java.simpleName, message.toString())
     }
 }

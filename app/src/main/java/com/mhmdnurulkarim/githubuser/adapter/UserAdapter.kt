@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.mhmdnurulkarim.githubuser.data.DetailUserResponse
+import com.mhmdnurulkarim.githubuser.data.network.DetailUserResponse
 import com.mhmdnurulkarim.githubuser.databinding.ItemUserBinding
 import com.mhmdnurulkarim.githubuser.ui.detailUserActivity.DetailUserActivity
 import com.mhmdnurulkarim.githubuser.utils.Const.EXTRA_USER

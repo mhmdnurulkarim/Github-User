@@ -4,22 +4,24 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mhmdnurulkarim.githubuser.R
 import com.mhmdnurulkarim.githubuser.adapter.UserAdapter
-import com.mhmdnurulkarim.githubuser.data.DetailUserResponse
-import com.mhmdnurulkarim.githubuser.data.dataStore.Resource
+import com.mhmdnurulkarim.githubuser.data.network.DetailUserResponse
 import com.mhmdnurulkarim.githubuser.databinding.ActivityMainBinding
+import com.mhmdnurulkarim.githubuser.ui.ViewModelFactory
 import com.mhmdnurulkarim.githubuser.ui.darkTheme.DarkThemeActivity
 import com.mhmdnurulkarim.githubuser.ui.favoriteActivity.FavoriteActivity
-import com.mhmdnurulkarim.githubuser.utils.ViewStateCallback
+import com.mhmdnurulkarim.githubuser.data.Result
+import kotlin.random.Random
 
-class MainActivity : AppCompatActivity(), ViewStateCallback<List<DetailUserResponse>> {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mAdapter: UserAdapter
-    private val mainViewModel: MainViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels{ ViewModelFactory.getInstance(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +38,13 @@ class MainActivity : AppCompatActivity(), ViewStateCallback<List<DetailUserRespo
             adapter = mAdapter
         }
 
-        mainViewModel.searchUser("karim").observe(this){
-            when (it) {
-                is Resource.Error -> onFailed(it.message)
-                is Resource.Loading -> onLoading()
-                is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
+        val names = listOf("Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Hannah", "Ivy", "Jack")
+        val randomName = names[Random.nextInt(names.size)]
+        mainViewModel.searchUser(randomName).observe(this) { result ->
+            when (result) {
+                is Result.Error -> onFailed(result.error)
+                is Result.Loading -> onLoading()
+                is Result.Success -> onSuccess(result.data.items)
             }
         }
 
@@ -49,13 +53,13 @@ class MainActivity : AppCompatActivity(), ViewStateCallback<List<DetailUserRespo
             searchView
                 .editText
                 .setOnEditorActionListener { _, _, _ ->
-                    searchBar.text = searchView.text
+//                    searchBar.text = searchView.text
                     searchView.hide()
-                    mainViewModel.searchUser(searchView.text.toString()).observe(this@MainActivity){
-                        when (it) {
-                            is Resource.Error -> onFailed(it.message)
-                            is Resource.Loading -> onLoading()
-                            is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
+                    mainViewModel.searchUser(searchView.text.toString()).observe(this@MainActivity){result ->
+                        when (result) {
+                            is Result.Error -> onFailed(result.error)
+                            is Result.Loading -> onLoading()
+                            is Result.Success -> onSuccess(result.data.items)
                         }
                     }
                     false
@@ -76,25 +80,25 @@ class MainActivity : AppCompatActivity(), ViewStateCallback<List<DetailUserRespo
         }
     }
 
-    override fun onSuccess(data: List<DetailUserResponse>){
+    private fun onSuccess(data: List<DetailUserResponse>){
         mAdapter.submitList(data)
         binding.contentRecyclerView.apply {
-            progressBar.visibility = invisible
-            rvMain.visibility = visible
+            progressBar.visibility = View.GONE
+            rvMain.visibility = View.VISIBLE
         }
     }
 
-    override fun onLoading() {
+    private fun onLoading() {
         binding.contentRecyclerView.apply {
-            progressBar.visibility = visible
-            rvMain.visibility = invisible
+            progressBar.visibility = View.VISIBLE
+            rvMain.visibility = View.GONE
         }
     }
 
-    override fun onFailed(message: String?) {
+    private fun onFailed(message: String?) {
         binding.contentRecyclerView.apply {
-            progressBar.visibility = invisible
-            rvMain.visibility = invisible
+            progressBar.visibility = View.GONE
+            rvMain.visibility = View.GONE
         }
         Log.d(MainActivity::class.java.simpleName, message.toString())
     }

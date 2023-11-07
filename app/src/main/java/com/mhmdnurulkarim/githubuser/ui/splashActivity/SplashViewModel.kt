@@ -1,13 +1,10 @@
 package com.mhmdnurulkarim.githubuser.ui.splashActivity
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.mhmdnurulkarim.githubuser.data.dataStore.Repository
+import com.mhmdnurulkarim.githubuser.data.Repository
 import kotlinx.coroutines.Dispatchers
 
-class SplashViewModel(application: Application): AndroidViewModel(application) {
-    private val repository = Repository(application)
-
+class SplashViewModel(private val repository: Repository): ViewModel() {
     fun getThemeSetting() = repository.getThemeSetting().asLiveData(Dispatchers.IO)
 }

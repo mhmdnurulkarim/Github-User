@@ -9,22 +9,22 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.mhmdnurulkarim.githubuser.R
-import com.mhmdnurulkarim.githubuser.data.dataStore.Resource
 import com.mhmdnurulkarim.githubuser.databinding.ActivitySplashBinding
+import com.mhmdnurulkarim.githubuser.ui.ViewModelFactory
 import com.mhmdnurulkarim.githubuser.ui.mainActivity.MainActivity
 import com.mhmdnurulkarim.githubuser.utils.Const.TIME_SPLASH
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
-    private val splashViewModel: SplashViewModel by viewModels()
+    private val splashViewModel: SplashViewModel by viewModels{ ViewModelFactory.getInstance(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         Glide.with(this@SplashActivity)
-            .load(R.mipmap.ic_github_launcher_round)
+            .load(R.mipmap.ic_github_launcher)
             .into(binding.ivPictureSplash)
 
         Handler(mainLooper).postDelayed({

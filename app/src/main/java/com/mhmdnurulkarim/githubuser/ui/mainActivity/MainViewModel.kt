@@ -1,11 +1,8 @@
 package com.mhmdnurulkarim.githubuser.ui.mainActivity
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.mhmdnurulkarim.githubuser.data.dataStore.Repository
+import androidx.lifecycle.ViewModel
+import com.mhmdnurulkarim.githubuser.data.Repository
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
-    private val repository = Repository(application)
-
+class MainViewModel(private val repository: Repository): ViewModel() {
     fun searchUser(query: String) = repository.searchUser(query)
 }

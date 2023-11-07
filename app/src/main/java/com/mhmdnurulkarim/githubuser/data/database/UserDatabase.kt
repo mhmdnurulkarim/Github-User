@@ -1,10 +1,10 @@
-package com.mhmdnurulkarim.githubuser.data.local
+package com.mhmdnurulkarim.githubuser.data.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.mhmdnurulkarim.githubuser.data.DetailUserResponse
+import com.mhmdnurulkarim.githubuser.data.network.DetailUserResponse
 
 @Database(entities = [DetailUserResponse::class], exportSchema = false, version = 1)
 abstract class UserDatabase: RoomDatabase() {
@@ -17,16 +17,15 @@ abstract class UserDatabase: RoomDatabase() {
 
         @JvmStatic
         fun getInstance(context: Context): UserDatabase {
-            if (INSTANCE == null) {
-                synchronized(UserDatabase::class.java) {
-                    INSTANCE = Room.databaseBuilder(
-                        context.applicationContext,
-                        UserDatabase::class.java,
-                        "User.db"
-                    ).build()
-                }
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: Room.databaseBuilder(
+                    context.applicationContext,
+                    UserDatabase::class.java, "User.db"
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
+                    .also { INSTANCE = it }
             }
-            return INSTANCE as UserDatabase
         }
     }
 }

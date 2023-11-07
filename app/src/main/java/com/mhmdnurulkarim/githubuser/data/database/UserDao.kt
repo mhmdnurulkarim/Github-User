@@ -1,7 +1,7 @@
-package com.mhmdnurulkarim.githubuser.data.local
+package com.mhmdnurulkarim.githubuser.data.database
 
 import androidx.room.*
-import com.mhmdnurulkarim.githubuser.data.DetailUserResponse
+import com.mhmdnurulkarim.githubuser.data.network.DetailUserResponse
 
 @Dao
 interface UserDao {

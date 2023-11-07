@@ -1,13 +1,17 @@
-package com.mhmdnurulkarim.githubuser.data
+package com.mhmdnurulkarim.githubuser.data.network
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+data class SearchResponse(
+    @field:SerializedName("items")
+    val items: List<DetailUserResponse>
+)
+
 @Entity(tableName = "user")
 data class DetailUserResponse(
-
     @field:SerializedName("id")
     @ColumnInfo(name = "id")
     @PrimaryKey

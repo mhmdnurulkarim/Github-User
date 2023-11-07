@@ -1,11 +1,8 @@
 package com.mhmdnurulkarim.githubuser.ui.followingFragment
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.mhmdnurulkarim.githubuser.data.dataStore.Repository
+import androidx.lifecycle.ViewModel
+import com.mhmdnurulkarim.githubuser.data.Repository
 
-class FollowingViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = Repository(application)
-
+class FollowingViewModel(private val repository: Repository): ViewModel() {
     fun getUserFollowing(username: String) = repository.getUserFollowing(username)
 }

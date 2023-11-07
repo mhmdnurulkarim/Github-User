@@ -1,16 +1,13 @@
 package com.mhmdnurulkarim.githubuser.ui.darkTheme
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.mhmdnurulkarim.githubuser.data.dataStore.Repository
+import com.mhmdnurulkarim.githubuser.data.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DarkThemeViewModel(application: Application): AndroidViewModel(application) {
-    private val repository = Repository(application)
-
+class DarkThemeViewModel(private val repository: Repository): ViewModel() {
     fun saveThemeSetting(isDarkModeActive: Boolean) = viewModelScope.launch {
         repository.saveThemeSetting(isDarkModeActive)
     }

@@ -1,29 +1,27 @@
 package com.mhmdnurulkarim.githubuser.ui.detailUserActivity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mhmdnurulkarim.githubuser.R
 import com.mhmdnurulkarim.githubuser.adapter.SectionPagerAdapter
-import com.mhmdnurulkarim.githubuser.data.DetailUserResponse
-import com.mhmdnurulkarim.githubuser.data.dataStore.Resource
+import com.mhmdnurulkarim.githubuser.data.Result
+import com.mhmdnurulkarim.githubuser.data.network.DetailUserResponse
 import com.mhmdnurulkarim.githubuser.databinding.ActivityDetailUserBinding
+import com.mhmdnurulkarim.githubuser.ui.ViewModelFactory
 import com.mhmdnurulkarim.githubuser.utils.Const.EXTRA_USER
 import com.mhmdnurulkarim.githubuser.utils.Const.TAB_TITLES
-import com.mhmdnurulkarim.githubuser.utils.ViewStateCallback
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-class DetailUserActivity : AppCompatActivity(), ViewStateCallback<DetailUserResponse?> {
+class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
-    private val detailViewModel: DetailUserViewModel by viewModels()
+    private val detailViewModel: DetailUserViewModel by viewModels{ ViewModelFactory.getInstance(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,20 +38,17 @@ class DetailUserActivity : AppCompatActivity(), ViewStateCallback<DetailUserResp
             }.attach()
         }
 
-        CoroutineScope(Dispatchers.Main).launch {
-            onLoading()
-            detailViewModel.getDetailUser(username.toString()).observe(this@DetailUserActivity) {
-                when (it) {
-                    is Resource.Error -> onFailed(it.message)
-                    is Resource.Loading -> onLoading()
-                    is Resource.Success -> onSuccess(it.data)
-                }
+        detailViewModel.getDetailUser(username.toString()).observe(this@DetailUserActivity) { result ->
+            when (result) {
+                is Result.Error -> onFailed(result.error)
+                is Result.Loading -> onLoading()
+                is Result.Success -> onSuccess(result.data)
             }
         }
     }
 
-    override fun onSuccess(data: DetailUserResponse?) {
-        binding.progressBar.visibility = invisible
+    private fun onSuccess(data: DetailUserResponse?) {
+        binding.progressBar.visibility = View.GONE
         binding.apply {
             detailName.text = data?.name
             detailUsername.text = data?.login
@@ -86,12 +81,12 @@ class DetailUserActivity : AppCompatActivity(), ViewStateCallback<DetailUserResp
         }
     }
 
-    override fun onLoading() {
-        binding.progressBar.visibility = visible
+    private fun onLoading() {
+        binding.progressBar.visibility = View.VISIBLE
     }
 
-    override fun onFailed(message: String?) {
-        binding.progressBar.visibility = visible
+    private fun onFailed(message: String?) {
+        binding.progressBar.visibility = View.VISIBLE
         Log.d(DetailUserActivity::class.java.simpleName, message.toString())
     }
 }

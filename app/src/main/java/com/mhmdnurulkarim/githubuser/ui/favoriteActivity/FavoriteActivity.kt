@@ -1,26 +1,27 @@
 package com.mhmdnurulkarim.githubuser.ui.favoriteActivity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mhmdnurulkarim.githubuser.adapter.UserAdapter
-import com.mhmdnurulkarim.githubuser.data.DetailUserResponse
-import com.mhmdnurulkarim.githubuser.data.dataStore.Resource
+import com.mhmdnurulkarim.githubuser.data.Result
+import com.mhmdnurulkarim.githubuser.data.network.DetailUserResponse
 import com.mhmdnurulkarim.githubuser.databinding.ActivityFavoriteBinding
+import com.mhmdnurulkarim.githubuser.ui.ViewModelFactory
 import com.mhmdnurulkarim.githubuser.ui.mainActivity.MainActivity
-import com.mhmdnurulkarim.githubuser.utils.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FavoriteActivity : AppCompatActivity(), ViewStateCallback<List<DetailUserResponse>> {
+class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoriteBinding
     private lateinit var mAdapter: UserAdapter
-    private val favoriteViewModel: FavoriteViewModel by viewModels()
+    private val favoriteViewModel: FavoriteViewModel by viewModels{ ViewModelFactory.getInstance(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +45,9 @@ class FavoriteActivity : AppCompatActivity(), ViewStateCallback<List<DetailUserR
         CoroutineScope(Dispatchers.Main).launch {
             favoriteViewModel.getFavoriteList().observe(this@FavoriteActivity) {
                 when (it) {
-                    is Resource.Error -> onFailed(it.message)
-                    is Resource.Loading -> onLoading()
-                    is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
+                    is Result.Error -> onFailed(it.error)
+                    is Result.Loading -> onLoading()
+                    is Result.Success -> onSuccess(it.data)
                 }
             }
         }
@@ -57,33 +58,33 @@ class FavoriteActivity : AppCompatActivity(), ViewStateCallback<List<DetailUserR
         CoroutineScope(Dispatchers.Main).launch {
             favoriteViewModel.getFavoriteList().observe(this@FavoriteActivity) {
                 when (it) {
-                    is Resource.Error -> onFailed(it.message)
-                    is Resource.Loading -> onLoading()
-                    is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
+                    is Result.Error -> onFailed(it.error)
+                    is Result.Loading -> onLoading()
+                    is Result.Success -> onSuccess(it.data)
                 }
             }
         }
     }
 
-    override fun onSuccess(data: List<DetailUserResponse>){
+    private fun onSuccess(data: List<DetailUserResponse>){
         mAdapter.submitList(data)
         binding.contentRecyclerView.apply {
-            progressBar.visibility = invisible
-            rvMain.visibility = visible
+            progressBar.visibility = View.GONE
+            rvMain.visibility = View.VISIBLE
         }
     }
 
-    override fun onLoading() {
+    private fun onLoading() {
         binding.contentRecyclerView.apply {
-            progressBar.visibility = visible
-            rvMain.visibility = invisible
+            progressBar.visibility = View.VISIBLE
+            rvMain.visibility = View.GONE
         }
     }
 
-    override fun onFailed(message: String?) {
+    private fun onFailed(message: String?) {
         binding.contentRecyclerView.apply {
-            progressBar.visibility = invisible
-            rvMain.visibility = invisible
+            progressBar.visibility = View.GONE
+            rvMain.visibility = View.GONE
         }
         Log.d(FavoriteActivity::class.java.simpleName, message.toString())
     }
