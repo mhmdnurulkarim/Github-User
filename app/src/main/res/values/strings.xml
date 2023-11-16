@@ -6,10 +6,11 @@
     <string name="following">Following</string>
     <string name="followers">Followers</string>
     <string name="repository">Repository</string>
-    <string name="searchbar_hint">Mau cari siapa?</string>
+    <string name="placeholder_search">Mau cari siapa?</string>
     <string name="name">Name</string>
     <string name="username">Username</string>
     <string name="nothing_user">User tidak ditemukan</string>
     <string name="favorite">Favorite</string>
     <string name="darkTheme">Dark Theme</string>
+    <string name="profile">Profile</string>
 </resources>

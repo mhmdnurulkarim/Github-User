@@ -17,18 +17,6 @@ import com.mhmdnurulkarim.githubuser.ui.ViewModelFactory
 
 class FollowingFragment : Fragment() {
 
-    companion object {
-        private const val KEY_BUNDLE = "USERNAME"
-
-        fun getInstance(username: String): Fragment {
-            return FollowingFragment().apply {
-                arguments = Bundle().apply {
-                    putString(KEY_BUNDLE, username)
-                }
-            }
-        }
-    }
-
     private var _binding: FragmentFollowingBinding? = null
     private val binding get() = _binding as FragmentFollowingBinding
     private val followingViewModel: FollowingViewModel by viewModels{ ViewModelFactory.getInstance(requireActivity()) }
@@ -94,5 +82,17 @@ class FollowingFragment : Fragment() {
             rvMain.visibility = View.GONE
         }
         Log.d(FollowingFragment::class.java.simpleName, message.toString())
+    }
+
+    companion object {
+        private const val KEY_BUNDLE = "USERNAME"
+
+        fun getInstance(username: String): Fragment {
+            return FollowingFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_BUNDLE, username)
+                }
+            }
+        }
     }
 }

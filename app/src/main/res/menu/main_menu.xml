@@ -15,4 +15,11 @@
             android:title="@string/darkTheme"
             app:showAsAction="ifRoom"
     />
+    <item
+        android:id="@+id/menu_profile"
+        android:icon="@drawable/ic_profile"
+        android:iconTint="?iconTint"
+        android:title="@string/profile"
+        app:showAsAction="ifRoom"
+        />
 </menu>

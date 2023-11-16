@@ -17,18 +17,6 @@ import com.mhmdnurulkarim.githubuser.ui.ViewModelFactory
 
 class FollowersFragment : Fragment() {
 
-    companion object {
-        private const val KEY_BUNDLE = "USERNAME"
-
-        fun getInstance(username: String): Fragment {
-            return FollowersFragment().apply {
-                arguments = Bundle().apply {
-                    putString(KEY_BUNDLE, username)
-                }
-            }
-        }
-    }
-
     private var _binding: FragmentFollowersBinding? = null
     private val binding get() = _binding as FragmentFollowersBinding
     private val followersViewModel: FollowersViewModel by viewModels{ ViewModelFactory.getInstance(requireActivity()) }
@@ -94,5 +82,17 @@ class FollowersFragment : Fragment() {
             rvMain.visibility = View.GONE
         }
         Log.d(FollowersFragment::class.java.simpleName, message.toString())
+    }
+
+    companion object {
+        private const val KEY_BUNDLE = "USERNAME"
+
+        fun getInstance(username: String): Fragment {
+            return FollowersFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_BUNDLE, username)
+                }
+            }
+        }
     }
 }

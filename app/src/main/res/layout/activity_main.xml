@@ -1,37 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.mainActivity.MainActivity">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.mainActivity.MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_barLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
-        <com.google.android.material.search.SearchBar
-                android:hint="@string/searchbar_hint"
-                android:id="@+id/searchBar"
-                android:textColor="?android:textColorPrimary"
+        <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_barLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent" />
-    </com.google.android.material.appbar.AppBarLayout>
+                android:fitsSystemWindows="true">
+            <com.google.android.material.search.SearchBar
+                    android:hint="@string/placeholder_search"
+                    android:id="@+id/searchBar"
+                    android:textColor="?android:textColorPrimary"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.search.SearchView
-            android:hint="@string/searchbar_hint"
-            android:id="@+id/searchView"
-            android:textColor="?android:textColorPrimary"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            app:layout_anchor="@id/searchBar"/>
+        <com.google.android.material.search.SearchView
+                android:hint="@string/placeholder_search"
+                android:id="@+id/searchView"
+                android:textColor="?android:textColorPrimary"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                app:layout_anchor="@id/searchBar"/>
 
     <include
-            android:id="@+id/contentRecyclerView"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            layout="@layout/conten_recycler_view"/>
+        android:id="@+id/contentRecyclerView"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        layout="@layout/conten_recycler_view"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

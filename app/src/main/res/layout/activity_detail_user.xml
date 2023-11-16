@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.detailUserActivity.DetailUserActivity">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
             android:id="@+id/detail_avatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
