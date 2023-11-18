@@ -51,11 +51,3 @@ fun Search(
 
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun SearchPreview() {
-    MaterialTheme{
-        Search(query = "", onQueryChange = {})
-    }
-}

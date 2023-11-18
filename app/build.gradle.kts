@@ -95,6 +95,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.compose.runtime:runtime-livedata") //observeAsState
+    implementation("androidx.compose.runtime:runtime-livedata: 1.5.4") //observeAsState
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1") //ConstraintLayout
 }

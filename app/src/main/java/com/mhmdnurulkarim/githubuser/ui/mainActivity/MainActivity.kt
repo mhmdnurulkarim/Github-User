@@ -1,39 +1,35 @@
 package com.mhmdnurulkarim.githubuser.ui.mainActivity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mhmdnurulkarim.githubuser.R
 import com.mhmdnurulkarim.githubuser.adapter.UserAdapter
 import com.mhmdnurulkarim.githubuser.data.Result
-import com.mhmdnurulkarim.githubuser.data.model.FakeNameData
 import com.mhmdnurulkarim.githubuser.data.model.FakeNameData.names
 import com.mhmdnurulkarim.githubuser.data.network.DetailUserResponse
 import com.mhmdnurulkarim.githubuser.databinding.ActivityMainBinding
 import com.mhmdnurulkarim.githubuser.ui.ViewModelFactory
+import com.mhmdnurulkarim.githubuser.ui.component.OptionMenu
+import com.mhmdnurulkarim.githubuser.ui.component.Search
 import com.mhmdnurulkarim.githubuser.ui.darkTheme.DarkThemeActivity
 import com.mhmdnurulkarim.githubuser.ui.favoriteActivity.FavoriteActivity
 import kotlin.random.Random
@@ -64,6 +60,33 @@ class MainActivity : AppCompatActivity() {
                 is Result.Error -> onFailed(result.error)
                 is Result.Loading -> onLoading()
                 is Result.Success -> onSuccess(result.data.items)
+            }
+        }
+
+        binding.appBarCompose.setContent {
+            val context = LocalContext.current
+            val queryUser by mainViewModel.queryUser
+
+            AppBarItem(
+                query = queryUser,
+                onQueryChange = mainViewModel::searchUser,
+                navigateToFavorite = {
+                    moveToFavorite(context)
+                },
+                navigateToProfile = {
+
+                },
+                navigateToSettings = {
+                    moveToSettings(context)
+                }
+            )
+
+            mainViewModel.getUser(queryUser).observe(this) { result ->
+                when (result) {
+                    is Result.Error -> onFailed(result.error)
+                    is Result.Loading -> onLoading()
+                    is Result.Success -> onSuccess(result.data.items)
+                }
             }
         }
 
@@ -128,52 +151,35 @@ class MainActivity : AppCompatActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBarItem() {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        "Github User",
-                    )
-                },
-                actions = {
-                    IconButton(onClick = {
-//                        LocalContext.current.startActivity(Intent(this, FavoriteActivity::class.java))
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Search"
-                        )
-                    }
-                    IconButton(onClick = {
-//                        LocalContext.current.startActivity(Intent(this, FavoriteActivity::class.java))
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Favorite,
-                            contentDescription = "Favorite"
-                        )
-                    }
-                    IconButton(onClick = {
-//                        LocalContext.current.startActivity(Intent(this, Profile::class.java))
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.AccountCircle,
-                            contentDescription = "My Profile"
-                        )
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-            )
-        },
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding))
+fun AppBarItem(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    navigateToFavorite: () -> Unit,
+    navigateToProfile: () -> Unit,
+    navigateToSettings: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.background(MaterialTheme.colorScheme.primary),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Search(
+            query = query,
+            onQueryChange = onQueryChange,
+            modifier = Modifier.weight(1f)
+        )
+        OptionMenu(
+            navigateToFavorite = navigateToFavorite,
+            navigateToProfile = navigateToProfile,
+            navigateToSettings = navigateToSettings
+        )
     }
+}
+
+private fun moveToFavorite(context: Context) {
+    context.startActivity(Intent(context, FavoriteActivity::class.java))
+}
+
+private fun moveToSettings(context: Context) {
+    context.startActivity(Intent(context, DarkThemeActivity::class.java))
 }

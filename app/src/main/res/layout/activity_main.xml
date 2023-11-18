@@ -1,31 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.mainActivity.MainActivity">
 
-        <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/app_barLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true">
-            <com.google.android.material.search.SearchBar
-                    android:hint="@string/placeholder_search"
-                    android:id="@+id/searchBar"
-                    android:textColor="?android:textColorPrimary"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent" />
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <com.google.android.material.search.SearchView
-                android:hint="@string/placeholder_search"
-                android:id="@+id/searchView"
-                android:textColor="?android:textColorPrimary"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                app:layout_anchor="@id/searchBar"/>
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/appBarCompose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </androidx.compose.ui.platform.ComposeView>
 
     <include
         android:id="@+id/contentRecyclerView"
@@ -33,4 +19,32 @@
         android:layout_width="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         layout="@layout/conten_recycler_view"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+<!--        <com.google.android.material.appbar.AppBarLayout-->
+<!--                android:id="@+id/app_barLayout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fitsSystemWindows="true">-->
+<!--            <com.google.android.material.search.SearchBar-->
+<!--                    android:hint="@string/placeholder_search"-->
+<!--                    android:id="@+id/searchBar"-->
+<!--                    android:textColor="?android:textColorPrimary"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_width="match_parent" />-->
+<!--        </com.google.android.material.appbar.AppBarLayout>-->
+
+<!--        <com.google.android.material.search.SearchView-->
+<!--                android:hint="@string/placeholder_search"-->
+<!--                android:id="@+id/searchView"-->
+<!--                android:textColor="?android:textColorPrimary"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_width="match_parent"-->
+<!--                app:layout_anchor="@id/searchBar"/>-->
+
+<!--    <include-->
+<!--        android:id="@+id/contentRecyclerView"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_width="match_parent"-->
+<!--        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"-->
+<!--        layout="@layout/conten_recycler_view"/>-->
+</LinearLayout>
