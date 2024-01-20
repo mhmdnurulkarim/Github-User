@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 object ApiConfig {
 
     fun getApiService(): ApiService {
-        val auth = Interceptor {chain ->
+        val auth = Interceptor { chain ->
             val req = chain.request()
             val requestHeaders = req.newBuilder()
                 .addHeader("Authorization", GITHUB_TOKEN)
@@ -19,7 +19,7 @@ object ApiConfig {
             chain.proceed(requestHeaders)
         }
 
-        val client:OkHttpClient = OkHttpClient.Builder()
+        val client: OkHttpClient = OkHttpClient.Builder()
             .addInterceptor(auth)
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)

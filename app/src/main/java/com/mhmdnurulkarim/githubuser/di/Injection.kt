@@ -12,6 +12,10 @@ object Injection {
         val datastore = UserDataStore.getInstance(context.dataStore)
         val database = UserDatabase.getInstance(context)
         val apiService = ApiConfig.getApiService()
-        return Repository.getInstance(dataStore = datastore, database = database, apiService = apiService)
+        return Repository.getInstance(
+            dataStore = datastore,
+            database = database,
+            apiService = apiService
+        )
     }
 }

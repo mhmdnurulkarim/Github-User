@@ -15,7 +15,7 @@ import com.mhmdnurulkarim.githubuser.ui.splashActivity.SplashViewModel
 
 class ViewModelFactory private constructor(
     private val repository: Repository
-): ViewModelProvider.NewInstanceFactory(){
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

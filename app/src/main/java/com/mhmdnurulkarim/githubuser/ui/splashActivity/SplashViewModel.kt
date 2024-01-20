@@ -5,6 +5,6 @@ import androidx.lifecycle.asLiveData
 import com.mhmdnurulkarim.githubuser.data.Repository
 import kotlinx.coroutines.Dispatchers
 
-class SplashViewModel(private val repository: Repository): ViewModel() {
+class SplashViewModel(private val repository: Repository) : ViewModel() {
     fun getThemeSetting() = repository.getThemeSetting().asLiveData(Dispatchers.IO)
 }

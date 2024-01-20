@@ -31,8 +31,12 @@ class FollowersFragment : Fragment() {
 
     private var _binding: FragmentFollowersBinding? = null
     private val binding get() = _binding as FragmentFollowersBinding
-    private val followersViewModel: FollowersViewModel by viewModels{ ViewModelFactory.getInstance(requireActivity()) }
-    private lateinit var  mAdapter: UserAdapter
+    private val followersViewModel: FollowersViewModel by viewModels {
+        ViewModelFactory.getInstance(
+            requireActivity()
+        )
+    }
+    private lateinit var mAdapter: UserAdapter
     private var username: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +68,7 @@ class FollowersFragment : Fragment() {
             adapter = mAdapter
         }
 
-        followersViewModel.getUserFollowers(username.toString()).observe(viewLifecycleOwner){
+        followersViewModel.getUserFollowers(username.toString()).observe(viewLifecycleOwner) {
             when (it) {
                 is Result.Error -> onFailed(it.error)
                 is Result.Loading -> onLoading()
@@ -73,7 +77,7 @@ class FollowersFragment : Fragment() {
         }
     }
 
-    private fun onSuccess(data: List<DetailUserResponse>){
+    private fun onSuccess(data: List<DetailUserResponse>) {
         mAdapter.submitList(data)
         binding.contentRecyclerView.apply {
             progressBar.visibility = View.GONE

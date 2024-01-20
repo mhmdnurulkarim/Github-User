@@ -31,7 +31,11 @@ class FollowingFragment : Fragment() {
 
     private var _binding: FragmentFollowingBinding? = null
     private val binding get() = _binding as FragmentFollowingBinding
-    private val followingViewModel: FollowingViewModel by viewModels{ ViewModelFactory.getInstance(requireActivity()) }
+    private val followingViewModel: FollowingViewModel by viewModels {
+        ViewModelFactory.getInstance(
+            requireActivity()
+        )
+    }
     private lateinit var mAdapter: UserAdapter
     private var username: String? = null
 
@@ -64,7 +68,7 @@ class FollowingFragment : Fragment() {
             adapter = mAdapter
         }
 
-        followingViewModel.getUserFollowing(username.toString()).observe(viewLifecycleOwner){
+        followingViewModel.getUserFollowing(username.toString()).observe(viewLifecycleOwner) {
             when (it) {
                 is Result.Error -> onFailed(it.error)
                 is Result.Loading -> onLoading()
@@ -73,7 +77,7 @@ class FollowingFragment : Fragment() {
         }
     }
 
-    private fun onSuccess(data: List<DetailUserResponse>){
+    private fun onSuccess(data: List<DetailUserResponse>) {
         mAdapter.submitList(data)
         binding.contentRecyclerView.apply {
             progressBar.visibility = View.GONE

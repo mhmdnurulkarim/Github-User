@@ -6,7 +6,7 @@ import com.mhmdnurulkarim.githubuser.data.Repository
 import com.mhmdnurulkarim.githubuser.data.network.DetailUserResponse
 import kotlinx.coroutines.launch
 
-class DetailUserViewModel(private val repository: Repository): ViewModel() {
+class DetailUserViewModel(private val repository: Repository) : ViewModel() {
     fun getDetailUser(username: String) = repository.getDetailUser(username)
 
     fun insertFavoriteUser(user: DetailUserResponse) = viewModelScope.launch {

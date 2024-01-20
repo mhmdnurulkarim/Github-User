@@ -7,7 +7,7 @@ import com.mhmdnurulkarim.githubuser.data.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DarkThemeViewModel(private val repository: Repository): ViewModel() {
+class DarkThemeViewModel(private val repository: Repository) : ViewModel() {
     fun saveThemeSetting(isDarkModeActive: Boolean) = viewModelScope.launch {
         repository.saveThemeSetting(isDarkModeActive)
     }

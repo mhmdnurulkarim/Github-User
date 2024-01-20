@@ -13,7 +13,7 @@ class Repository private constructor(
     private val dataStore: UserDataStore,
     database: UserDatabase,
     private val apiService: ApiService
-){
+) {
     private val dao: UserDao = database.userDao()
 
     fun searchUser(query: String): LiveData<Result<SearchResponse>> = liveData {
@@ -21,7 +21,7 @@ class Repository private constructor(
         try {
             val response = apiService.searchUser(query)
             emit(Result.Success(response))
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             emit(Result.Error(e.toString()))
         }
@@ -32,7 +32,7 @@ class Repository private constructor(
         try {
             val response = apiService.getDetailUser(username)
             emit(Result.Success(response))
-            if (dao.getFavoriteDetailUser(username) != null){
+            if (dao.getFavoriteDetailUser(username) != null) {
                 emit(Result.Success(dao.getFavoriteDetailUser(username)))
             }
         } catch (e: Exception) {
@@ -81,13 +81,14 @@ class Repository private constructor(
 
     suspend fun deleteFavoriteUser(user: DetailUserResponse) = dao.deleteFavoriteUser(user)
 
-    suspend fun saveThemeSetting(isDarkModeActive: Boolean) = dataStore.saveThemeSetting(isDarkModeActive)
+    suspend fun saveThemeSetting(isDarkModeActive: Boolean) =
+        dataStore.saveThemeSetting(isDarkModeActive)
 
     fun getThemeSetting() = dataStore.getThemeSetting()
 
     companion object {
         @Volatile
-        private var instance:Repository? = null
+        private var instance: Repository? = null
 
         fun getInstance(
             dataStore: UserDataStore,

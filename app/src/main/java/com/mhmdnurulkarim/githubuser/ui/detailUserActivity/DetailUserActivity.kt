@@ -21,7 +21,11 @@ import com.mhmdnurulkarim.githubuser.utils.Const.TAB_TITLES
 class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
-    private val detailViewModel: DetailUserViewModel by viewModels{ ViewModelFactory.getInstance(this) }
+    private val detailViewModel: DetailUserViewModel by viewModels {
+        ViewModelFactory.getInstance(
+            this
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +42,14 @@ class DetailUserActivity : AppCompatActivity() {
             }.attach()
         }
 
-        detailViewModel.getDetailUser(username.toString()).observe(this@DetailUserActivity) { result ->
-            when (result) {
-                is Result.Error -> onFailed(result.error)
-                is Result.Loading -> onLoading()
-                is Result.Success -> onSuccess(result.data)
+        detailViewModel.getDetailUser(username.toString())
+            .observe(this@DetailUserActivity) { result ->
+                when (result) {
+                    is Result.Error -> onFailed(result.error)
+                    is Result.Loading -> onLoading()
+                    is Result.Success -> onSuccess(result.data)
+                }
             }
-        }
     }
 
     private fun onSuccess(data: DetailUserResponse?) {
@@ -56,26 +61,50 @@ class DetailUserActivity : AppCompatActivity() {
             detailNumberFollowing.text = data?.following.toString()
             detailNumberRepo.text = data?.publicRepos.toString()
 
-        Glide.with(this@DetailUserActivity)
-            .load(data?.avatarUrl)
-            .apply(RequestOptions.circleCropTransform())
-            .into(binding.detailAvatar)
+            Glide.with(this@DetailUserActivity)
+                .load(data?.avatarUrl)
+                .apply(RequestOptions.circleCropTransform())
+                .into(binding.detailAvatar)
 
-            if (data?.isFavorite == true){
-                fabFavorite.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_favorite, null))
+            if (data?.isFavorite == true) {
+                fabFavorite.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.ic_favorite,
+                        null
+                    )
+                )
             } else {
-                fabFavorite.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_favorite_border, null))
+                fabFavorite.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.ic_favorite_border,
+                        null
+                    )
+                )
             }
 
             fabFavorite.setOnClickListener {
                 if (data?.isFavorite == true) {
                     data.isFavorite = false
                     detailViewModel.deleteFavoriteUser(data)
-                    fabFavorite.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_favorite_border, null))
+                    fabFavorite.setImageDrawable(
+                        ResourcesCompat.getDrawable(
+                            resources,
+                            R.drawable.ic_favorite_border,
+                            null
+                        )
+                    )
                 } else {
                     data?.isFavorite = true
                     data?.let { it1 -> detailViewModel.insertFavoriteUser(it1) }
-                    fabFavorite.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_favorite, null))
+                    fabFavorite.setImageDrawable(
+                        ResourcesCompat.getDrawable(
+                            resources,
+                            R.drawable.ic_favorite,
+                            null
+                        )
+                    )
                 }
             }
         }

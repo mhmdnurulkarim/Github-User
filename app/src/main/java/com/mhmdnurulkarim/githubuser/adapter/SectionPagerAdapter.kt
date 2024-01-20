@@ -7,7 +7,8 @@ import com.mhmdnurulkarim.githubuser.ui.followersFragment.FollowersFragment
 import com.mhmdnurulkarim.githubuser.ui.followingFragment.FollowingFragment
 import com.mhmdnurulkarim.githubuser.utils.Const.TAB_TITLES
 
-class SectionPagerAdapter(activity: AppCompatActivity, private val username: String): FragmentStateAdapter(activity) {
+class SectionPagerAdapter(activity: AppCompatActivity, private val username: String) :
+    FragmentStateAdapter(activity) {
     override fun createFragment(position: Int): Fragment {
         val fragment = when (position) {
             0 -> FollowersFragment.getInstance(username)

@@ -21,7 +21,11 @@ import kotlinx.coroutines.launch
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoriteBinding
     private lateinit var mAdapter: UserAdapter
-    private val favoriteViewModel: FavoriteViewModel by viewModels{ ViewModelFactory.getInstance(this) }
+    private val favoriteViewModel: FavoriteViewModel by viewModels {
+        ViewModelFactory.getInstance(
+            this
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +70,7 @@ class FavoriteActivity : AppCompatActivity() {
         }
     }
 
-    private fun onSuccess(data: List<DetailUserResponse>){
+    private fun onSuccess(data: List<DetailUserResponse>) {
         mAdapter.submitList(data)
         binding.contentRecyclerView.apply {
             progressBar.visibility = View.GONE
