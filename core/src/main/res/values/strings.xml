@@ -1,0 +1,4 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="following" tools:ignore="ExtraTranslation">Following</string>
+    <string name="followers" tools:ignore="ExtraTranslation">Followers</string>
+</resources>

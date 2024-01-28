@@ -1,18 +1,16 @@
 package com.mhmdnurulkarim.githubuser.di
 
 import android.content.Context
-import com.mhmdnurulkarim.githubuser.data.Repository
-import com.mhmdnurulkarim.githubuser.data.database.UserDatabase
-import com.mhmdnurulkarim.githubuser.data.datastore.UserDataStore
-import com.mhmdnurulkarim.githubuser.data.datastore.dataStore
-import com.mhmdnurulkarim.githubuser.data.network.ApiConfig
+import com.mhmdnurulkarim.core.data.source.local.room.GithubUserDatabase
+import com.mhmdnurulkarim.core.data.source.local.datastore.UserDataStore
+import com.mhmdnurulkarim.core.data.source.local.datastore.dataStore
 
 object Injection {
-    fun provideRepository(context: Context): Repository {
+    fun provideRepository(context: Context): com.mhmdnurulkarim.core.data.GithubUserRepository {
         val datastore = UserDataStore.getInstance(context.dataStore)
-        val database = UserDatabase.getInstance(context)
+        val database = GithubUserDatabase.getInstance(context)
         val apiService = ApiConfig.getApiService()
-        return Repository.getInstance(
+        return com.mhmdnurulkarim.core.data.GithubUserRepository.getInstance(
             dataStore = datastore,
             database = database,
             apiService = apiService

@@ -16,16 +16,16 @@
             android:theme="@style/Theme.GithubUser"
             tools:targetApi="31">
         <activity
-                android:name=".ui.darkTheme.DarkThemeActivity"
+                android:name=".darkTheme.DarkThemeActivity"
                 android:exported="false"/>
         <activity
-                android:name=".ui.favoriteActivity.FavoriteActivity"
+                android:name="com.mhmdnurulkarim.favorite.FavoriteActivity"
                 android:exported="false"/>
         <activity
-                android:name=".ui.detailUserActivity.DetailUserActivity"
+                android:name=".detailUserActivity.DetailUserActivity"
                 android:exported="true"/>
         <activity
-                android:name=".ui.splashActivity.SplashActivity"
+                android:name=".splashActivity.SplashActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ui.mainActivity.MainActivity"
+                android:name=".mainActivity.MainActivity"
                 android:exported="true"/>
     </application>
 

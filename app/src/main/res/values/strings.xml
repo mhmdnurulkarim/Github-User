@@ -12,4 +12,5 @@
     <string name="nothing_user">User tidak ditemukan</string>
     <string name="favorite">Favorite</string>
     <string name="darkTheme">Dark Theme</string>
+    <string name="title_favorite">favorite</string>
 </resources>
