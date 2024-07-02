@@ -1,17 +1,21 @@
 package com.mhmdnurulkarim.githubuser.followingFragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mhmdnurulkarim.core.data.source.remote.response.GithubUserResponse
+import com.mhmdnurulkarim.core.data.Resource
+import com.mhmdnurulkarim.core.domain.model.User
+import com.mhmdnurulkarim.core.ui.UserAdapter
 import com.mhmdnurulkarim.githubuser.databinding.FragmentFollowingBinding
-import com.mhmdnurulkarim.githubuser.ViewModelFactory
+import com.mhmdnurulkarim.githubuser.detailUserActivity.DetailUserActivity
+import com.mhmdnurulkarim.githubuser.utils.Const
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FollowingFragment : Fragment() {
 
@@ -29,12 +33,8 @@ class FollowingFragment : Fragment() {
 
     private var _binding: FragmentFollowingBinding? = null
     private val binding get() = _binding as FragmentFollowingBinding
-    private val followingViewModel: FollowingViewModel by viewModels {
-        ViewModelFactory.getInstance(
-            requireActivity()
-        )
-    }
-    private lateinit var mAdapter: com.mhmdnurulkarim.core.ui.UserAdapter
+    private val followingViewModel: FollowingViewModel by viewModel()
+    private lateinit var mAdapter: UserAdapter
     private var username: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +58,13 @@ class FollowingFragment : Fragment() {
 
         val mLayoutManager = LinearLayoutManager(view.context)
         val itemDecoration = DividerItemDecoration(view.context, mLayoutManager.orientation)
-        mAdapter = com.mhmdnurulkarim.core.ui.UserAdapter()
+        mAdapter = UserAdapter(
+            onClick = { selectedData ->
+                val intent = Intent(activity, DetailUserActivity::class.java)
+                intent.putExtra(Const.EXTRA_USER, selectedData.login)
+                startActivity(intent)
+            }
+        )
 
         binding.contentRecyclerView.rvMain.apply {
             layoutManager = mLayoutManager
@@ -68,14 +74,14 @@ class FollowingFragment : Fragment() {
 
         followingViewModel.getUserFollowing(username.toString()).observe(viewLifecycleOwner) {
             when (it) {
-                is com.mhmdnurulkarim.core.data.Result.Error -> onFailed(it.error)
-                is com.mhmdnurulkarim.core.data.Result.Loading -> onLoading()
-                is com.mhmdnurulkarim.core.data.Result.Success -> onSuccess(it.data)
+                is Resource.Error -> onFailed(it.message)
+                is Resource.Loading -> onLoading()
+                is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
             }
         }
     }
 
-    private fun onSuccess(data: List<GithubUserResponse>) {
+    private fun onSuccess(data: List<User>) {
         mAdapter.submitList(data)
         binding.contentRecyclerView.apply {
             progressBar.visibility = View.GONE

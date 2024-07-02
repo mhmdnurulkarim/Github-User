@@ -4,20 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.mhmdnurulkarim.githubuser.R
 import com.mhmdnurulkarim.githubuser.databinding.ActivitySplashBinding
-import com.mhmdnurulkarim.githubuser.ViewModelFactory
 import com.mhmdnurulkarim.githubuser.mainActivity.MainActivity
-import com.mhmdnurulkarim.core.utils.Const.TIME_SPLASH
+import com.mhmdnurulkarim.githubuser.utils.Const.TIME_SPLASH
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
-    private val splashViewModel: SplashViewModel by viewModels { ViewModelFactory.getInstance(this) }
+    private val splashViewModel: SplashViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -28,15 +26,16 @@ class SplashActivity : AppCompatActivity() {
             .into(binding.ivPictureSplash)
 
         Handler(mainLooper).postDelayed({
-            splashViewModel.getThemeSetting().observe(this@SplashActivity) { isDarkMode ->
-                if (isDarkMode) {
-                    move()
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                } else {
-                    move()
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
-            }
+            move()
+//            splashViewModel.getThemeSetting().observe(this@SplashActivity) { isDarkMode ->
+//                if (isDarkMode) {
+//                    move()
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//                } else {
+//                    move()
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//                }
+//            }
         }, TIME_SPLASH)
     }
 

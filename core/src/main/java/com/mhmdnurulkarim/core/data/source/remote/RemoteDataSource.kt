@@ -1,53 +1,62 @@
 package com.mhmdnurulkarim.core.data.source.remote
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import com.mhmdnurulkarim.core.data.source.remote.response.GithubUserResponse
-import com.mhmdnurulkarim.core.data.source.remote.response.SearchGithubUserResponse
+import android.util.Log
+import com.mhmdnurulkarim.core.data.source.remote.network.ApiResponse
+import com.mhmdnurulkarim.core.data.source.remote.network.ApiService
+import com.mhmdnurulkarim.core.data.source.remote.response.UserResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
-fun searchUser(query: String): LiveData<Result<SearchGithubUserResponse>> = liveData {
-    emit(Result.Loading)
-    try {
-        val response = apiService.searchUser(query)
-        emit(Result.Success(response))
-    } catch (e: Exception) {
-        e.printStackTrace()
-        emit(Result.Error(e.toString()))
-    }
-}
+class RemoteDataSource(private val apiService: ApiService) {
 
-fun getDetailUser(username: String): LiveData<Result<GithubUserResponse>> = liveData {
-    emit(Result.Loading)
-    try {
-        val response = apiService.getDetailUser(username)
-        emit(Result.Success(response))
-        if (dao.getFavoriteDetailUser(username) != null) {
-            emit(Result.Success(dao.getFavoriteDetailUser(username)))
-        }
-    } catch (e: Exception) {
-        e.printStackTrace()
-        emit(Result.Error(e.toString()))
-    }
-}
+    suspend fun searchUser(query: String?): Flow<ApiResponse<List<UserResponse>>> =
+        flow {
+            try {
+                val userSearch = apiService.searchUser(query)
+                val userArray = userSearch.items
+                if (userArray.isEmpty()) {
+                    emit(ApiResponse.Empty)
+                } else {
+                    emit(ApiResponse.Success(userArray))
+                }
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
+            }
+        }.flowOn(Dispatchers.IO)
 
-fun getUserFollowing(username: String): LiveData<Result<List<GithubUserResponse>>> = liveData {
-    emit(Result.Loading)
-    try {
-        val response = apiService.getUserFollowing(username)
-        emit(Result.Success(response))
-    } catch (e: Exception) {
-        e.printStackTrace()
-        emit(Result.Error(e.toString()))
-    }
-}
+    suspend fun getDetailUser(username: String): Flow<ApiResponse<UserResponse>> =
+        flow {
+            try {
+                val userDetail = apiService.getDetailUser(username)
+                emit(ApiResponse.Success(userDetail))
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
+            }
+        }.flowOn(Dispatchers.IO)
 
-fun getUserFollowers(username: String): LiveData<Result<List<GithubUserResponse>>> = liveData {
-    emit(Result.Loading)
-    try {
-        val response = apiService.getUserFollowers(username)
-        emit(Result.Success(response))
-    } catch (e: Exception) {
-        e.printStackTrace()
-        emit(Result.Error(e.toString()))
-    }
+    suspend fun getUserFollowers(username: String): Flow<ApiResponse<List<UserResponse>>> =
+        flow {
+            try {
+                val userFollower = apiService.getUserFollowers(username)
+                emit(ApiResponse.Success(userFollower))
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
+            }
+        }.flowOn(Dispatchers.IO)
+
+    suspend fun getUserFollowing(username: String): Flow<ApiResponse<List<UserResponse>>> =
+        flow {
+            try {
+                val userFollowing = apiService.getUserFollowing(username)
+                emit(ApiResponse.Success(userFollowing))
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
+            }
+        }.flowOn(Dispatchers.IO)
 }

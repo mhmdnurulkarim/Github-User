@@ -1,7 +1,9 @@
 package com.mhmdnurulkarim.githubuser.followersFragment
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import com.mhmdnurulkarim.core.domain.usecase.UserUseCase
 
-class FollowersViewModel(private val githubUserRepository: com.mhmdnurulkarim.core.data.GithubUserRepository) : ViewModel() {
-    fun getUserFollowers(username: String) = githubUserRepository.getUserFollowers(username)
+class FollowersViewModel(private val userUseCase: UserUseCase) : ViewModel() {
+    fun getUserFollowers(username: String) = userUseCase.getUserFollowers(username).asLiveData()
 }

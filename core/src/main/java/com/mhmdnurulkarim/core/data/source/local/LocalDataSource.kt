@@ -1,23 +1,22 @@
 package com.mhmdnurulkarim.core.data.source.local
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import com.mhmdnurulkarim.core.data.source.remote.response.GithubUserResponse
+import com.mhmdnurulkarim.core.data.source.local.datastore.UserDataStore
+import com.mhmdnurulkarim.core.data.source.local.entity.UserEntity
+import com.mhmdnurulkarim.core.data.source.local.room.UserDao
+import kotlinx.coroutines.flow.Flow
 
-suspend fun getFavoriteList(): LiveData<Result<List<GithubUserResponse>>> = liveData {
-    emit(Result.Loading)
-    if (dao.getFavoriteListUser().isEmpty()) {
-        emit(Result.Error("Null"))
-    } else {
-        try {
-            emit(Result.Success(dao.getFavoriteListUser()))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(Result.Error(e.toString()))
-        }
-    }
+class LocalDataSource(private val dao: UserDao) {
+
+    fun getFavoriteListUser(): Flow<List<UserEntity>> = dao.getFavoriteListUser()
+    
+    fun getFavoriteDetailUser(username: String): Flow<UserEntity> = dao.getFavoriteDetailUser(username)
+
+    suspend fun insertFavoriteUser(user: UserEntity) = dao.insertFavoriteUser(user)
+
+    suspend fun deleteFavoriteUser(user: UserEntity) = dao.deleteFavoriteUser(user)
+
+//    suspend fun saveThemeSetting(isDarkModeActive: Boolean) =
+//        dataStore.saveThemeSetting(isDarkModeActive)
+//
+//    fun getThemeSetting() = dataStore.getThemeSetting()
 }
-
-suspend fun insertFavoriteUser(user: GithubUserResponse) = dao.insertFavoriteUser(user)
-
-suspend fun deleteFavoriteUser(user: GithubUserResponse) = dao.deleteFavoriteUser(user)

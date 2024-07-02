@@ -3,27 +3,24 @@ package com.mhmdnurulkarim.githubuser.detailUserActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayoutMediator
+import com.mhmdnurulkarim.core.data.Resource
+import com.mhmdnurulkarim.core.domain.model.User
 import com.mhmdnurulkarim.githubuser.R
-import com.mhmdnurulkarim.core.data.source.remote.response.GithubUserResponse
+import com.mhmdnurulkarim.githubuser.SectionPagerAdapter
 import com.mhmdnurulkarim.githubuser.databinding.ActivityDetailUserBinding
-import com.mhmdnurulkarim.githubuser.ViewModelFactory
-import com.mhmdnurulkarim.core.utils.Const.EXTRA_USER
-import com.mhmdnurulkarim.core.utils.Const.TAB_TITLES
+import com.mhmdnurulkarim.githubuser.utils.Const.EXTRA_USER
+import com.mhmdnurulkarim.githubuser.utils.Const.TAB_TITLES
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
-    private val detailViewModel: DetailUserViewModel by viewModels {
-        ViewModelFactory.getInstance(
-            this
-        )
-    }
+    private val detailViewModel: DetailUserViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +28,7 @@ class DetailUserActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val username = intent.getStringExtra(EXTRA_USER)
-        val pageAdapter = com.mhmdnurulkarim.core.ui.SectionPagerAdapter(this, username.toString())
+        val pageAdapter = SectionPagerAdapter(this, username.toString())
 
         binding.apply {
             viewPager.adapter = pageAdapter
@@ -43,14 +40,14 @@ class DetailUserActivity : AppCompatActivity() {
         detailViewModel.getDetailUser(username.toString())
             .observe(this@DetailUserActivity) { result ->
                 when (result) {
-                    is com.mhmdnurulkarim.core.data.Result.Error -> onFailed(result.error)
-                    is com.mhmdnurulkarim.core.data.Result.Loading -> onLoading()
-                    is com.mhmdnurulkarim.core.data.Result.Success -> onSuccess(result.data)
+                    is Resource.Error -> onFailed(result.message)
+                    is Resource.Loading -> onLoading()
+                    is Resource.Success -> onSuccess(result.data)
                 }
             }
     }
 
-    private fun onSuccess(data: GithubUserResponse?) {
+    private fun onSuccess(data: User?) {
         binding.progressBar.visibility = View.GONE
         binding.apply {
             detailName.text = data?.name

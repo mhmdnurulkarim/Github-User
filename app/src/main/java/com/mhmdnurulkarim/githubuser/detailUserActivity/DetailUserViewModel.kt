@@ -1,18 +1,23 @@
 package com.mhmdnurulkarim.githubuser.detailUserActivity
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.mhmdnurulkarim.core.data.source.remote.response.GithubUserResponse
+import com.mhmdnurulkarim.core.data.source.remote.response.UserResponse
+import com.mhmdnurulkarim.core.domain.model.User
+import com.mhmdnurulkarim.core.domain.usecase.UserUseCase
 import kotlinx.coroutines.launch
 
-class DetailUserViewModel(private val githubUserRepository: com.mhmdnurulkarim.core.data.GithubUserRepository) : ViewModel() {
-    fun getDetailUser(username: String) = githubUserRepository.getDetailUser(username)
+class DetailUserViewModel(private val userUseCase: UserUseCase) : ViewModel() {
+    fun getDetailUser(username: String) = userUseCase.getDetailUser(username).asLiveData()
 
-    fun insertFavoriteUser(user: GithubUserResponse) = viewModelScope.launch {
-        githubUserRepository.insertFavoriteUser(user)
+    fun getFavoriteDetailUser(username: String) = userUseCase.getFavoriteDetailUser(username).asLiveData()
+
+    fun insertFavoriteUser(user: User) = viewModelScope.launch {
+        userUseCase.insertFavoriteUser(user)
     }
 
-    fun deleteFavoriteUser(user: GithubUserResponse) = viewModelScope.launch {
-        githubUserRepository.deleteFavoriteUser(user)
+    fun deleteFavoriteUser(user: User) = viewModelScope.launch {
+        userUseCase.deleteFavoriteUser(user)
     }
 }

@@ -4,36 +4,46 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mhmdnurulkarim.core.data.source.remote.response.GithubUserResponse
-import com.mhmdnurulkarim.githubuser.databinding.ActivityFavoriteBinding
-import com.mhmdnurulkarim.githubuser.ViewModelFactory
+import com.mhmdnurulkarim.core.data.Resource
+import com.mhmdnurulkarim.core.domain.model.User
+import com.mhmdnurulkarim.core.ui.UserAdapter
+import com.mhmdnurulkarim.favorite.databinding.ActivityFavoriteBinding
+import com.mhmdnurulkarim.favorite.di.favoriteModule
+import com.mhmdnurulkarim.githubuser.detailUserActivity.DetailUserActivity
 import com.mhmdnurulkarim.githubuser.mainActivity.MainActivity
+import com.mhmdnurulkarim.githubuser.utils.Const
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.loadKoinModules
 
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoriteBinding
-    private lateinit var mAdapter: com.mhmdnurulkarim.core.ui.UserAdapter
-    private val favoriteViewModel: FavoriteViewModel by viewModels {
-        ViewModelFactory.getInstance(
-            this
-        )
-    }
+    private lateinit var mAdapter: UserAdapter
+    private val favoriteViewModel: FavoriteViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFavoriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        loadKoinModules(favoriteModule)
+
         val mLayoutManager = LinearLayoutManager(this)
         val itemDecoration = DividerItemDecoration(this, mLayoutManager.orientation)
-        mAdapter = com.mhmdnurulkarim.core.ui.UserAdapter()
+        mAdapter = UserAdapter(
+            onClick = { selectedData ->
+                val intent = Intent(this, DetailUserActivity::class.java)
+                intent.putExtra(Const.EXTRA_USER, selectedData.login)
+                startActivity(intent)
+            }
+        )
 
-        binding.contentRecyclerView.rvMain.apply {
+        binding.rvMain.apply {
             layoutManager = mLayoutManager
             addItemDecoration(itemDecoration)
             adapter = mAdapter
@@ -47,9 +57,9 @@ class FavoriteActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             favoriteViewModel.getFavoriteList().observe(this@FavoriteActivity) {
                 when (it) {
-                    is com.mhmdnurulkarim.core.data.Result.Error -> onFailed(it.error)
-                    is com.mhmdnurulkarim.core.data.Result.Loading -> onLoading()
-                    is com.mhmdnurulkarim.core.data.Result.Success -> onSuccess(it.data)
+                    is Resource.Error<*> -> onFailed(it.message)
+                    is Resource.Loading<*> -> onLoading()
+                    is Resource.Success<*> -> onSuccess(it.data as List<User>)
                 }
             }
         }
@@ -60,31 +70,31 @@ class FavoriteActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             favoriteViewModel.getFavoriteList().observe(this@FavoriteActivity) {
                 when (it) {
-                    is com.mhmdnurulkarim.core.data.Result.Error -> onFailed(it.error)
-                    is com.mhmdnurulkarim.core.data.Result.Loading -> onLoading()
-                    is com.mhmdnurulkarim.core.data.Result.Success -> onSuccess(it.data)
+                    is Resource.Error<*> -> onFailed(it.message)
+                    is Resource.Loading<*> -> onLoading()
+                    is Resource.Success<*> -> onSuccess(it.data as List<User>)
                 }
             }
         }
     }
 
-    private fun onSuccess(data: List<GithubUserResponse>) {
+    private fun onSuccess(data: List<User>) {
         mAdapter.submitList(data)
-        binding.contentRecyclerView.apply {
+        binding.apply {
             progressBar.visibility = View.GONE
             rvMain.visibility = View.VISIBLE
         }
     }
 
     private fun onLoading() {
-        binding.contentRecyclerView.apply {
+        binding.apply {
             progressBar.visibility = View.VISIBLE
             rvMain.visibility = View.GONE
         }
     }
 
     private fun onFailed(message: String?) {
-        binding.contentRecyclerView.apply {
+        binding.apply {
             progressBar.visibility = View.GONE
             rvMain.visibility = View.GONE
         }

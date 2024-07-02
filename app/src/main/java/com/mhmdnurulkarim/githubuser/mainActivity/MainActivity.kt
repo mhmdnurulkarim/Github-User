@@ -1,25 +1,28 @@
 package com.mhmdnurulkarim.githubuser.mainActivity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.viewModels
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mhmdnurulkarim.core.data.Resource
+import com.mhmdnurulkarim.core.domain.model.User
+import com.mhmdnurulkarim.core.ui.UserAdapter
 import com.mhmdnurulkarim.githubuser.R
-import com.mhmdnurulkarim.core.data.source.remote.response.GithubUserResponse
 import com.mhmdnurulkarim.githubuser.databinding.ActivityMainBinding
-import com.mhmdnurulkarim.githubuser.ViewModelFactory
-import com.mhmdnurulkarim.githubuser.darkTheme.DarkThemeActivity
-import com.mhmdnurulkarim.favorite.FavoriteActivity
+import com.mhmdnurulkarim.githubuser.detailUserActivity.DetailUserActivity
+import com.mhmdnurulkarim.githubuser.utils.Const.EXTRA_USER
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mAdapter: com.mhmdnurulkarim.core.ui.UserAdapter
-    private val mainViewModel: MainViewModel by viewModels { ViewModelFactory.getInstance(this) }
+    private lateinit var mAdapter: UserAdapter
+    private val mainViewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +31,13 @@ class MainActivity : AppCompatActivity() {
 
         val mLayoutManager = LinearLayoutManager(this)
         val itemDecoration = DividerItemDecoration(this, mLayoutManager.orientation)
-        mAdapter = com.mhmdnurulkarim.core.ui.UserAdapter()
+        mAdapter = UserAdapter(
+            onClick = { selectedData ->
+                val intent = Intent(this, DetailUserActivity::class.java)
+                intent.putExtra(EXTRA_USER, selectedData.login)
+                startActivity(intent)
+            }
+        )
 
         binding.contentRecyclerView.rvMain.apply {
             layoutManager = mLayoutManager
@@ -51,9 +60,9 @@ class MainActivity : AppCompatActivity() {
         val randomName = names[Random.nextInt(names.size)]
         mainViewModel.searchUser(randomName).observe(this) { result ->
             when (result) {
-                is com.mhmdnurulkarim.core.data.Result.Error -> onFailed(result.error)
-                is com.mhmdnurulkarim.core.data.Result.Loading -> onLoading()
-                is com.mhmdnurulkarim.core.data.Result.Success -> onSuccess(result.data.items)
+                is Resource.Error -> onFailed(result.message)
+                is Resource.Loading -> onLoading()
+                is Resource.Success -> onSuccess(result.data)
             }
         }
 
@@ -67,9 +76,9 @@ class MainActivity : AppCompatActivity() {
                     mainViewModel.searchUser(searchView.text.toString())
                         .observe(this@MainActivity) { result ->
                             when (result) {
-                                is com.mhmdnurulkarim.core.data.Result.Error -> onFailed(result.error)
-                                is com.mhmdnurulkarim.core.data.Result.Loading -> onLoading()
-                                is com.mhmdnurulkarim.core.data.Result.Success -> onSuccess(result.data.items)
+                                is Resource.Error -> onFailed(result.message)
+                                is Resource.Loading -> onLoading()
+                                is Resource.Success -> result.data?.let { onSuccess(it) }
                             }
                         }
                     false
@@ -79,11 +88,13 @@ class MainActivity : AppCompatActivity() {
             searchBar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.menu_favorite -> {
-                        startActivity(Intent(this@MainActivity, com.mhmdnurulkarim.favorite.FavoriteActivity::class.java))
+                        val uri = Uri.parse("githubuser://favorite")
+                        startActivity(Intent(Intent.ACTION_VIEW, uri))
                     }
 
                     R.id.menu_darkTheme -> {
-                        startActivity(Intent(this@MainActivity, DarkThemeActivity::class.java))
+//                        startActivity(Intent(this@MainActivity, DarkThemeActivity::class.java))
+                        Toast.makeText(this@MainActivity, "InPorgress", Toast.LENGTH_SHORT).show()
                     }
                 }
                 true
@@ -91,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onSuccess(data: List<GithubUserResponse>) {
+    private fun onSuccess(data: List<User>?) {
         mAdapter.submitList(data)
         binding.contentRecyclerView.apply {
             progressBar.visibility = View.GONE

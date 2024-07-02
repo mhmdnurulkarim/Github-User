@@ -1,7 +1,9 @@
 package com.mhmdnurulkarim.githubuser.mainActivity
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import com.mhmdnurulkarim.core.domain.usecase.UserUseCase
 
-class MainViewModel(private val githubUserRepository: com.mhmdnurulkarim.core.data.GithubUserRepository) : ViewModel() {
-    fun searchUser(query: String) = githubUserRepository.searchUser(query)
+class MainViewModel(private val userUseCase: UserUseCase) : ViewModel() {
+    fun searchUser(query: String?) = userUseCase.searchUser(query).asLiveData()
 }

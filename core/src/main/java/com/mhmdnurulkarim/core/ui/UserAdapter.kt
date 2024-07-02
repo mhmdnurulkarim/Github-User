@@ -1,6 +1,5 @@
 package com.mhmdnurulkarim.core.ui
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,15 +7,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.mhmdnurulkarim.githubuser.data.network.DetailUserResponse
-import com.mhmdnurulkarim.githubuser.databinding.ItemUserBinding
-import com.mhmdnurulkarim.githubuser.ui.detailUserActivity.DetailUserActivity
-import com.mhmdnurulkarim.core.utils.Const.EXTRA_USER
+import com.mhmdnurulkarim.core.databinding.ItemUserBinding
+import com.mhmdnurulkarim.core.domain.model.User
 
-class UserAdapter : ListAdapter<DetailUserResponse, UserAdapter.ListViewHolder>(DIFF_CALLBACK) {
+class UserAdapter(
+    private val onClick: (User) -> Unit
+) : ListAdapter<User, UserAdapter.ListViewHolder>(DIFF_CALLBACK) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ListViewHolder(binding)
+        return ListViewHolder(binding, onClick)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
@@ -24,34 +24,32 @@ class UserAdapter : ListAdapter<DetailUserResponse, UserAdapter.ListViewHolder>(
         holder.setData(dataPosition)
     }
 
-    inner class ListViewHolder(private val binding: ItemUserBinding) :
+    inner class ListViewHolder(private val binding: ItemUserBinding, val onClick: (User) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
-        fun setData(user: DetailUserResponse) {
+        fun setData(user: User) {
             Glide.with(itemView.context)
                 .load(user.avatarUrl)
                 .apply(RequestOptions.circleCropTransform())
                 .into(binding.imgItemPhoto)
             binding.tvItemName.text = user.login
             itemView.setOnClickListener {
-                val intentToDetail = Intent(itemView.context, DetailUserActivity::class.java)
-                intentToDetail.putExtra(EXTRA_USER, user.login)
-                itemView.context.startActivity(intentToDetail)
+                onClick(user)
             }
         }
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DetailUserResponse>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<User>() {
             override fun areItemsTheSame(
-                oldItem: DetailUserResponse,
-                newItem: DetailUserResponse
+                oldItem: User,
+                newItem: User
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: DetailUserResponse,
-                newItem: DetailUserResponse
+                oldItem: User,
+                newItem: User
             ): Boolean {
                 return oldItem == newItem
             }
