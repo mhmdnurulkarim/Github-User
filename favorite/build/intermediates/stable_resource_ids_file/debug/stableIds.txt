@@ -1,0 +1,6 @@
+com.mhmdnurulkarim.githubuser:string/favorite = 0x80030000
+com.mhmdnurulkarim.githubuser:id/topAppBar = 0x80010003
+com.mhmdnurulkarim.githubuser:layout/activity_favorite = 0x80020000
+com.mhmdnurulkarim.githubuser:id/rv_main = 0x80010002
+com.mhmdnurulkarim.githubuser:id/progress_bar = 0x80010001
+com.mhmdnurulkarim.githubuser:id/app_barLayout = 0x80010000

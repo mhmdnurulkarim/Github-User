@@ -1,0 +1,62 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    xmlns:dist="http://schemas.android.com/apk/distribution"
+4    featureSplit="favorite"
+5    package="com.mhmdnurulkarim.githubuser"
+6    android:versionCode="1"
+7    android:versionName="1.0" >
+8
+9    <uses-sdk
+10        android:minSdkVersion="26"
+11        android:targetSdkVersion="26" />
+12
+13    <dist:module
+13-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:5:5-13:19
+14        dist:instant="false"
+14-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:6:9-29
+15        dist:title="@string/title_favorite" >
+15-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:7:9-44
+16        <dist:delivery>
+16-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:8:9-10:25
+17            <dist:install-time />
+17-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:9:13-34
+18        </dist:delivery>
+19
+20        <dist:fusing dist:include="true" />
+20-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:12:9-44
+20-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:12:22-41
+21    </dist:module>
+22
+23    <application
+23-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:15:5-26:19
+24        android:debuggable="true"
+25        android:extractNativeLibs="false"
+26        android:testOnly="true" >
+27        <activity
+27-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:16:9-25:20
+28            android:name="com.mhmdnurulkarim.favorite.FavoriteActivity"
+28-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:17:13-45
+29            android:exported="true"
+29-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:18:13-36
+30            android:splitName="favorite" >
+31            <intent-filter>
+31-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:19:13-24:29
+32                <action android:name="android.intent.action.VIEW" />
+32-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:20:17-68
+32-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:20:25-66
+33
+34                <category android:name="android.intent.category.DEFAULT" />
+34-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:21:17-75
+34-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:21:27-73
+35
+36                <data
+36-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:22:17-23:46
+37                    android:host="favorite"
+37-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:23:21-44
+38                    android:scheme="githubuser" />
+38-->/home/karim/Windows/Project/Dicoding/Android_Belajar_Fundamental_Aplikasi_Android/Submission/GithubUser/favorite/src/main/AndroidManifest.xml:22:23-50
+39            </intent-filter>
+40        </activity>
+41    </application>
+42
+43</manifest>

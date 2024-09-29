@@ -1,0 +1,7 @@
+R_DEF: Internal format may change without notice
+local
+id card_view
+id img_item_photo
+id tv_item_name
+layout item_user
+string user

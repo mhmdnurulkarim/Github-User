@@ -1,0 +1,5 @@
+int id card_view 0x0
+int id img_item_photo 0x0
+int id tv_item_name 0x0
+int layout item_user 0x0
+int string user 0x0
