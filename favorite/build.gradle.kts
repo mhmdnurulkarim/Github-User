@@ -29,6 +29,5 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-
-    androidTestImplementation("androidx.annotation:annotation:1.7.1")
+    implementation("androidx.test:monitor:1.7.2")
 }
