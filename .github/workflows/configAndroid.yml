@@ -26,16 +26,6 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
-      # Step to set up Gradle 8.7.0
-      - name: Set up Gradle 8.7.0
-        run: |
-          wget https://services.gradle.org/distributions/gradle-8.7.0-bin.zip
-          unzip gradle-8.7.0-bin.zip
-          sudo mv gradle-8.7.0 /opt/gradle
-        env:
-          GRADLE_HOME: /opt/gradle
-        shell: bash
-
       # Cache Gradle dependencies
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
