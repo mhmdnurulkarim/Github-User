@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -18,10 +16,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
-        buildConfigField("String","API_KEY","\"${properties.getProperty("API_KEY")}\"")
-        buildConfigField("String","BASE_URL","\"${properties.getProperty("BASE_URL")}\"")
+        buildConfigField("String","API_KEY","\"https://api.github.com/\"")
+        buildConfigField("String","BASE_URL","\"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\"")
     }
 
     buildTypes {
