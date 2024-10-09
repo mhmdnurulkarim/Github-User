@@ -14,7 +14,6 @@ android {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
 
         buildConfigField("String","API_KEY","\"https://api.github.com/\"")
         buildConfigField("String","BASE_URL","\"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\"")
@@ -24,10 +23,12 @@ android {
         release {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            consumerProguardFiles("consumer-rules.pro")
         }
-        release {
+        debug {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            consumerProguardFiles("consumer-rules.pro")
         }
     }
     buildFeatures{

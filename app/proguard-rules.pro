@@ -19,3 +19,21 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep all classes in core.data package
+-keep class com.mhmdnurulkarim.core.data.** { *; }
+
+# Keep all classes in core.domain.model package
+-keep class com.mhmdnurulkarim.core.domain.model.** { *; }
+
+# Keep all classes in core.domain.repository package
+-keep class com.mhmdnurulkarim.core.domain.repository.** { *; }
+
+# Keep all classes in core.domain.usecase package
+-keep class com.mhmdnurulkarim.core.domain.usecase.** { *; }
+
+# Keep all classes in core.ui package
+-keep class com.mhmdnurulkarim.core.ui.** { *; }
+
+# Keep all Koin modules to ensure dependency injection works correctly
+-keep class com.mhmdnurulkarim.core.di.** { *; }
