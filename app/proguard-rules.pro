@@ -37,3 +37,4 @@
 
 # Keep all Koin modules to ensure dependency injection works correctly
 -keep class com.mhmdnurulkarim.core.di.** { *; }
+
