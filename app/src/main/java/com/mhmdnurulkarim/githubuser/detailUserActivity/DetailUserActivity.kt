@@ -21,6 +21,7 @@ class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
     private val detailViewModel: DetailUserViewModel by viewModel()
+    private var isFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,14 @@ class DetailUserActivity : AppCompatActivity() {
                 when (result) {
                     is Resource.Error -> onFailed(result.message)
                     is Resource.Loading -> onLoading()
-                    is Resource.Success -> onSuccess(result.data)
+                    is Resource.Success -> {
+                        onSuccess(result.data)
+                        changedFavorite(isFavorite)
+                        binding.fabFavorite.setOnClickListener{
+                            result.data?.let { it1 -> addOrRemoveFavorite(it1) }
+                            changedFavorite(isFavorite)
+                        }
+                    }
                 }
             }
     }
@@ -61,47 +69,46 @@ class DetailUserActivity : AppCompatActivity() {
                 .apply(RequestOptions.circleCropTransform())
                 .into(binding.detailAvatar)
 
-            if (data?.isFavorite == true) {
-                fabFavorite.setImageDrawable(
-                    ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.ic_favorite,
-                        null
-                    )
-                )
-            } else {
-                fabFavorite.setImageDrawable(
-                    ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.ic_favorite_border,
-                        null
-                    )
-                )
+            data?.login?.let {
+                detailViewModel.getFavoriteDetailState(it)
+                    ?.observe(this@DetailUserActivity) { data ->
+                        isFavorite = data.isFavorite == true
+                        changedFavorite(isFavorite)
+                    }
             }
+        }
+    }
 
-            fabFavorite.setOnClickListener {
-                if (data?.isFavorite == true) {
-                    data.isFavorite = false
-                    detailViewModel.deleteFavoriteUser(data)
-                    fabFavorite.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.drawable.ic_favorite_border,
-                            null
-                        )
-                    )
-                } else {
-                    data?.isFavorite = true
-                    data?.let { it1 -> detailViewModel.insertFavoriteUser(it1) }
-                    fabFavorite.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            resources,
-                            R.drawable.ic_favorite,
-                            null
-                        )
-                    )
-                }
-            }
+    private fun addOrRemoveFavorite(data: User) {
+        if (!isFavorite) {
+            data.isFavorite = true
+            detailViewModel.insertFavoriteUser(data)
+            isFavorite = true
+        } else {
+            data.isFavorite = false
+            detailViewModel.deleteFavoriteUser(data)
+            isFavorite = false
+        }
+        changedFavorite(isFavorite)
+    }
+
+    private fun changedFavorite(isFavorite: Boolean) {
+        if (isFavorite) {
+            binding.fabFavorite.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.ic_favorite,
+                    null
+                )
+            )
+        } else {
+            binding.fabFavorite.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.ic_favorite_border,
+                    null
+                )
+            )
         }
     }
 

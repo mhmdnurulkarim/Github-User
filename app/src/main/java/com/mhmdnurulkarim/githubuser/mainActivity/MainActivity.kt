@@ -13,6 +13,7 @@ import com.mhmdnurulkarim.core.data.Resource
 import com.mhmdnurulkarim.core.domain.model.User
 import com.mhmdnurulkarim.core.ui.UserAdapter
 import com.mhmdnurulkarim.githubuser.R
+import com.mhmdnurulkarim.githubuser.darkTheme.DarkThemeActivity
 import com.mhmdnurulkarim.githubuser.databinding.ActivityMainBinding
 import com.mhmdnurulkarim.githubuser.detailUserActivity.DetailUserActivity
 import com.mhmdnurulkarim.githubuser.utils.Const.EXTRA_USER
@@ -93,8 +94,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.menu_darkTheme -> {
-//                        startActivity(Intent(this@MainActivity, DarkThemeActivity::class.java))
-                        Toast.makeText(this@MainActivity, "InPorgress", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@MainActivity, DarkThemeActivity::class.java))
                     }
                 }
                 true

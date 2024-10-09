@@ -12,11 +12,16 @@ interface IUserRepository {
     fun getUserFollowers(username: String): Flow<Resource<List<User>>>
 
     fun getUserFollowing(username: String): Flow<Resource<List<User>>>
+
     fun getFavoriteListUser(): Flow<List<User>>
 
-    fun getFavoriteDetailUser(username: String): Flow<User>
+    fun getFavoriteDetailState(username: String): Flow<User>?
 
     suspend fun insertFavoriteUser(user: User)
 
     suspend fun deleteFavoriteUser(user: User): Int
+
+    suspend fun saveThemeSetting(isDarkMode: Boolean)
+
+    fun getThemeSetting(): Flow<Boolean>
 }

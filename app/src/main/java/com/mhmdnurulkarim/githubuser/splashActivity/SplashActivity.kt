@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.mhmdnurulkarim.githubuser.R
 import com.mhmdnurulkarim.githubuser.databinding.ActivitySplashBinding
@@ -27,15 +28,15 @@ class SplashActivity : AppCompatActivity() {
 
         Handler(mainLooper).postDelayed({
             move()
-//            splashViewModel.getThemeSetting().observe(this@SplashActivity) { isDarkMode ->
-//                if (isDarkMode) {
-//                    move()
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-//                } else {
-//                    move()
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-//                }
-//            }
+            splashViewModel.getThemeSetting().observe(this@SplashActivity) { isDarkMode ->
+                if (isDarkMode) {
+                    move()
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                } else {
+                    move()
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
         }, TIME_SPLASH)
     }
 

@@ -46,3 +46,15 @@ The conditions that must be met are as follows:
 
 ## Wireframe Submission
 ![Wireframe_Submission!](https://dicoding-web-img.sgp1.cdn.digitaloceanspaces.com/original/academy/dos:e03b56048534db077b076722497b517e20210909103516.png "Wireframe Submission")
+
+## Setting Up API Key and Base URL
+To ensure seamless integration with the [Github API](https://api.github.com/), please follow these steps:
+
+1. Open the project in Android Studio.
+2. Locate the `local.properties` file in the root directory of the project.
+3. Add the following lines to the `local.properties` file:
+
+```properties
+API_KEY=your_api_key_here
+BASE_URL=your_base_url_here
+```

@@ -8,9 +8,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DarkThemeViewModel(private val userUseCase: UserUseCase) : ViewModel() {
-//    fun saveThemeSetting(isDarkModeActive: Boolean) = viewModelScope.launch {
-//        githubUserRepository.saveThemeSetting(isDarkModeActive)
-//    }
-//
-//    fun getThemeSetting() = githubUserRepository.getThemeSetting().asLiveData(Dispatchers.IO)
+    fun saveThemeSetting(isDarkModeActive: Boolean) = viewModelScope.launch {
+        userUseCase.saveThemeSetting(isDarkModeActive)
+    }
+
+    fun getThemeSetting() = userUseCase.getThemeSetting().asLiveData(Dispatchers.IO)
 }

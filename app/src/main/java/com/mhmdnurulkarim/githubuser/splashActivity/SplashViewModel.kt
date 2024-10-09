@@ -6,5 +6,5 @@ import com.mhmdnurulkarim.core.domain.usecase.UserUseCase
 import kotlinx.coroutines.Dispatchers
 
 class SplashViewModel(private val userUseCase: UserUseCase) : ViewModel() {
-//    fun getThemeSetting() = userUseCase.getThemeSetting().asLiveData(Dispatchers.IO)
+    fun getThemeSetting() = userUseCase.getThemeSetting().asLiveData(Dispatchers.IO)
 }

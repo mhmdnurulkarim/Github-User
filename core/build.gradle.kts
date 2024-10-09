@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -14,18 +16,22 @@ android {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"https://api.github.com\"")
-        buildConfigField("String", "API_KEY", "\"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\"")
         consumerProguardFiles("consumer-rules.pro")
+
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        buildConfigField("String","API_KEY","\"${properties.getProperty("API_KEY")}\"")
+        buildConfigField("String","BASE_URL","\"${properties.getProperty("BASE_URL")}\"")
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        release {
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     buildFeatures{
@@ -72,6 +78,7 @@ dependencies {
     api("com.squareup.retrofit2:retrofit:2.9.0")
     api("com.squareup.retrofit2:converter-gson:2.9.0")
     api("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    api("com.squareup.okhttp3:okhttp:4.12.0")
 
     //Room
     api("androidx.room:room-ktx:2.6.1")
@@ -84,4 +91,11 @@ dependencies {
     //Glide
     api("com.github.bumptech.glide:glide:4.16.0")
     api("de.hdodenhof:circleimageview:3.1.0")
+
+    //Encryption SQL
+    api("net.zetetic:android-database-sqlcipher:4.4.2")
+    api("androidx.sqlite:sqlite-ktx:2.2.0")
+
+    //Leak Canary
+    api("com.squareup.leakcanary:leakcanary-android:2.12")
 }

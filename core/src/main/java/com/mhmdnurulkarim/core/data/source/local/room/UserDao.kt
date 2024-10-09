@@ -14,7 +14,7 @@ interface UserDao {
     fun getFavoriteListUser(): Flow<List<UserEntity>>
 
     @Query("SELECT * FROM user WHERE username = :username")
-    fun getFavoriteDetailUser(username: String): Flow<UserEntity>
+    fun getFavoriteDetailState(username: String): Flow<UserEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavoriteUser(user: UserEntity)

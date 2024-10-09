@@ -2,6 +2,7 @@ package com.mhmdnurulkarim.core.data
 
 import com.mhmdnurulkarim.core.data.source.NetworkResource
 import com.mhmdnurulkarim.core.data.source.local.LocalDataSource
+import com.mhmdnurulkarim.core.data.source.local.datastore.UserDataStore
 import com.mhmdnurulkarim.core.data.source.remote.RemoteDataSource
 import com.mhmdnurulkarim.core.data.source.remote.network.ApiResponse
 import com.mhmdnurulkarim.core.data.source.remote.response.UserResponse
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.map
 
 class UserRepository(
     private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource
+    private val remoteDataSource: RemoteDataSource,
+    private val userDataStore: UserDataStore
 ) : IUserRepository {
     override fun searchUser(query: String?): Flow<Resource<List<User>>> {
         return object : NetworkResource<List<User>, List<UserResponse>>() {
@@ -72,19 +74,24 @@ class UserRepository(
         }
     }
 
-    override fun getFavoriteDetailUser(username: String): Flow<User> {
-        return localDataSource.getFavoriteDetailUser(username).map {
+    override fun getFavoriteDetailState(username: String): Flow<User> {
+        return localDataSource.getFavoriteDetailState(username).map {
             DataMapper.mapEntityToDomain(it)
         }
     }
 
     override suspend fun insertFavoriteUser(user: User) {
         val domainUser = DataMapper.mapDomainToEntity(user)
-        return localDataSource.insertFavoriteUser(domainUser)
+        localDataSource.insertFavoriteUser(domainUser)
     }
 
-    override suspend fun deleteFavoriteUser(user: User) : Int {
+    override suspend fun deleteFavoriteUser(user: User): Int {
         val domainUser = DataMapper.mapDomainToEntity(user)
         return localDataSource.deleteFavoriteUser(domainUser)
     }
+
+    override suspend fun saveThemeSetting(isDarkMode: Boolean) =
+        userDataStore.saveThemeSetting(isDarkMode)
+
+    override fun getThemeSetting() = userDataStore.getThemeSetting()
 }
