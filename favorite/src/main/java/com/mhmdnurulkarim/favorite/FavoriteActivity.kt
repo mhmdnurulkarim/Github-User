@@ -57,8 +57,9 @@ class FavoriteActivity : AppCompatActivity() {
     private fun observeFavoriteList() {
         lifecycleScope.launch {
             favoriteViewModel.getFavoriteList().observe(this@FavoriteActivity) { data ->
+                onLoading()
                 if (data.isEmpty()) {
-                    onLoading()
+                    onEmptyData()
                 } else {
                     onSuccess(data)
                 }
@@ -71,6 +72,14 @@ class FavoriteActivity : AppCompatActivity() {
         binding.apply {
             progressBar.visibility = View.GONE
             rvMain.visibility = View.VISIBLE
+        }
+    }
+
+    private fun onEmptyData() {
+        binding.apply {
+            progressBar.visibility = View.GONE
+            rvMain.visibility = View.GONE
+            tvNoData.visibility = View.VISIBLE
         }
     }
 

@@ -13,10 +13,8 @@
 
 # Gson specific classes
 -dontwarn sun.misc.**
-#-keep class com.google.gson.stream.** { *; }
-
-# Application classes that will be serialized/deserialized over Gson
--keep class com.google.gson.examples.android.model.** { <fields>; }
+# Ganti dengan model yang digunakan dalam project Anda
+-keep class com.mhmdnurulkarim.core.model.** { <fields>; }
 
 # Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
 # JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
@@ -27,7 +25,7 @@
 
 # Prevent R8 from leaving Data object members always null
 -keepclassmembers,allowobfuscation class * {
-@com.google.gson.annotations.SerializedName <fields>;
+    @com.google.gson.annotations.SerializedName <fields>;
 }
 
 
@@ -41,8 +39,16 @@
 
 # Retain service method parameters when optimizing.
 -keepclassmembers,allowshrinking,allowobfuscation interface * {
-@retrofit2.http.* <methods>;
+    @retrofit2.http.* <methods>;
 }
+
+-keep interface * {
+    @retrofit2.http.* <methods>;
+}
+
+# Retrofit library classes
+-keep class retrofit2.** { *; }
+-keep interface retrofit2.** { *; }
 
 # Ignore annotation used for build tooling.
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
@@ -68,12 +74,18 @@
 ##---------------Begin: proguard configuration for Glide ----------
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep class * extends com.bumptech.glide.module.AppGlideModule {
-<init>(...);
+    <init>(...);
 }
 -keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
-**[] $VALUES;
-public *;
+    **[] $VALUES;
+    public *;
 }
 -keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
-*** rewind();
+    *** rewind();
 }
+
+
+##---------------Custom Rules to Prevent ClassCastException ----------
+# Keep ParameterizedType information to prevent ClassCastException
+-keepclassmembers class * implements java.lang.reflect.ParameterizedType { *; }
+-keep class java.lang.Class { *; }
