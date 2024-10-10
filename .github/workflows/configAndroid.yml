@@ -73,7 +73,7 @@ jobs:
 
       # Create a new GitHub Release and upload the APK
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v1.10.0
         with:
           files: ./debug-apk/*.apk
         env:
