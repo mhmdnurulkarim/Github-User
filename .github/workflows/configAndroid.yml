@@ -58,7 +58,7 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v') # Hanya berjalan jika tag versi dipush
+    #if: startsWith(github.ref, 'refs/tags/v')
     steps:
       # Step to check out the code (required by GitHub Actions for context)
       - name: Check out repository
