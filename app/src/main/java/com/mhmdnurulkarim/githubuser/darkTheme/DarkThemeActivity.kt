@@ -1,7 +1,6 @@
 package com.mhmdnurulkarim.githubuser.darkTheme
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.mhmdnurulkarim.githubuser.databinding.ActivityDarkThemeBinding

@@ -15,18 +15,18 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String","API_KEY","\"https://api.github.com/\"")
-        buildConfigField("String","BASE_URL","\"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\"")
+        buildConfigField("String","BASE_URL","\"https://api.github.com\"")
+        buildConfigField("String","API_KEY","\"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\"")
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             consumerProguardFiles("consumer-rules.pro")
         }
         debug {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             consumerProguardFiles("consumer-rules.pro")
         }
@@ -95,5 +95,5 @@ dependencies {
     api("androidx.sqlite:sqlite-ktx:2.2.0")
 
     //Leak Canary
-    api("com.squareup.leakcanary:leakcanary-android:2.12")
+    debugApi("com.squareup.leakcanary:leakcanary-android:2.12")
 }
